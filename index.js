@@ -57,25 +57,26 @@ function createFormHandler(e){
   postFetch(artistName, artistBio)
 }
 
-function postFetch(artistName, artistBio) {
+function postFetch(name, biography) {
+  const bodyData= {name, biography}
   fetch(artistsURL, {
      method: "POST",
      headers: {'Content-Type': 'application/json'},
-     body: JSON.stringify({
-       name: artistName,
-       biography: artistBio,
-     })
+     body: JSON.stringify(bodyData)
    })
    .then(response => response.json())
-   .then(artist => {console.log(artist)})
+   .then(artist => {
 
-      // const artistData= artist.data.attributes
-      // const artistDisplay= `
-      // <div data-id=${artist.id}>
-      // <h2>${artistData.name}</h2>
-      // <p>${artistData.biography}</p>
-      // </div>`
-   //
-   // document.querySelector('#artist-container').innerHTML += artistDisplay;
+     //const artistName= artist.name
+     //const artistBio= artist.biography
+     //const artistId= artist.id
 
-   }
+     const artistDisplay= `
+      <div data-id=${artist.Id}>
+      <h2>${artist.name}</h2>
+      <p>${artist.biography}</p>
+      </div>`
+
+   document.querySelector('#artist-container').innerHTML += artistDisplay;
+  })
+}
