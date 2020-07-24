@@ -15,19 +15,10 @@ function getArtworks() {
   .then(response => response.json())
   .then(artworks => {
     artworks.data.forEach(artwork => {
-      //data to get to array
-      const artworkDisplay = `
-      <div data-id=${artwork.id}>
-      <img src=${artwork.attributes.image_url} height="800" width="800">
-      <h2>${artwork.attributes.title}</h2>
-      <h3>${artwork.attributes.artist.name}</h3>
-      <h3>${artwork.attributes.year}</h3>
-      <h3>Likes: ${artwork.attributes.likes}</h3>
-      <p>${artwork.attributes.description}</p>
-      <button data-id=${artwork.id}>Edit</button>
-      </div>`
 
-      document.querySelector('#artwork-container').innerHTML += artworkDisplay
+      let newArtwork= new Artwork(artwork, artwork.attributes)
+
+      document.querySelector('#artwork-container').innerHTML += newArtwork.renderArtworkCard()
     });
   })
 }
@@ -37,15 +28,10 @@ function getArtists(){
   .then(response => response.json())
   .then(artists => {
     artists.data.forEach(artist => {
-      const artistDisplay= `
-      <div data-id=${artist.id}>
-      <h2>${artist.attributes.name}</h2>
-      <p>${artist.attributes.biography}</p>
-      </div>`
 
-    document.querySelector('#artist-container').innerHTML += artistDisplay
+      let newArtist= new Artist(artist, artist.attributes)
 
-
+    document.querySelector('#artist-container').innerHTML += newArtist.renderArtistCard()
   });
   })
 }
@@ -67,9 +53,9 @@ function postFetch(name, biography) {
    .then(response => response.json())
    .then(artist => {
 
-     //const artistName= artist.name
-     //const artistBio= artist.biography
-     //const artistId= artist.id
+     // const artistName= artist.name
+     // const artistBio= artist.biography
+     // const artistId= artist.id
 
      const artistDisplay= `
       <div data-id=${artist.Id}>
@@ -77,6 +63,6 @@ function postFetch(name, biography) {
       <p>${artist.biography}</p>
       </div>`
 
-   document.querySelector('#artist-container').innerHTML += artistDisplay;
+   document.querySelector('#artist-container').innerHTML += artistDisplay
   })
 }
