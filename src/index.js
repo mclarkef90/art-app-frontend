@@ -13,7 +13,19 @@ document.addEventListener("DOMContentLoaded", () =>{
   const createArtistForm= document.querySelector("#new-artist-form-container")
 
   createArtistForm.addEventListener("submit", (e) => createFormHandler(e))
-})
+
+  const artworkContainer= document.querySelector("#artwork-container")
+
+  artworkContainer.addEventListener("click", (e) =>{
+    const id = parseInt(e.target.dataset.id);
+    const artwork = Artwork.findById(id);
+    console.log(artwork);
+    console.log(e.target.dataset);
+    likes(e)
+  })
+
+
+});
 
 function getArtworks() {
   fetch(artworksURL)
@@ -89,4 +101,9 @@ function showArtistForm() {
 
     document.getElementById("new-artist-form-container").innerHTML += newForm
 
+  }
+
+  function likes(e){
+
+    console.log("Hi")
   }

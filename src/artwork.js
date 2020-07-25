@@ -18,9 +18,14 @@ class Artwork {
     <h3>${this.artist.name}</h3>
     <h3>${this.year}</h3>
     <h3>Likes: ${this.likes}</h3>
+    <button id="like-button" data-id=${this.id}>Add Like</button>
     <p>${this.description}</p>
     <button data-id=${this.id}>Edit</button>
     </div>`
+  }
+
+  static findById(id) {
+    return this.all.find(artwork => artwork.id === id);
   }
 }
 
