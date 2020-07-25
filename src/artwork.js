@@ -13,7 +13,7 @@ class Artwork {
   renderArtworkCard(){
     return`
     <div data-id=${this.id}>
-    <img src=${this.image_url} height="800" width="800">
+    <img src=${this.image_url} height="400" width="auto">
     <h2>${this.title}</h2>
     <h3>${this.artist.name}</h3>
     <h3>${this.year}</h3>
