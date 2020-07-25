@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () =>{
     const id = e.target.dataset.id;
     const artwork = Artwork.findById(id);
     likes(e, artwork)
-    getArtworks()
   })
 
 
@@ -118,5 +117,7 @@ function showArtistForm() {
       })
     })
     .then(res => res.json())
-    .then(getArtworks)
+    .then(updatedArtwork => updatedArtwork.remove(updateArtwork.likes))
+
+    document.getElementById("Likes").innerHTML = updateLikes
   }
