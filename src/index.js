@@ -1,6 +1,9 @@
 const artworksURL= "http://localhost:3000/api/v1/artworks"
 const artistsURL= "http://localhost:3000/api/v1/artists"
 
+
+
+
 document.addEventListener("DOMContentLoaded", () =>{
   getArtworks()
 
@@ -15,11 +18,10 @@ document.addEventListener("DOMContentLoaded", () =>{
   createArtistForm.addEventListener("submit", (e) => createFormHandler(e))
 
   const artworkContainer= document.querySelector("#artwork-container")
-
-  artworkContainer.addEventListener("click", (e) =>{
-    const id = e.target.dataset.id;
-    const artwork = Artwork.findById(id);
-    likes(e, artwork)
+    artworkContainer.addEventListener("click", (e) =>{
+      const id = e.target.dataset.id;
+      const artwork = Artwork.findById(id);
+      likes(e, artwork)
   })
 
 
@@ -34,8 +36,10 @@ function getArtworks() {
       let newArtwork= new Artwork(artwork, artwork.attributes)
 
       document.querySelector('#artwork-container').innerHTML += newArtwork.renderArtworkCard()
+
     });
   })
+
 }
 
 function getArtists(){
@@ -117,7 +121,6 @@ function showArtistForm() {
       })
     })
     .then(res => res.json())
-    .then(updatedArtwork => updatedArtwork.remove(updateArtwork.likes))
-
-    document.getElementById("Likes").innerHTML = updateLikes
+    .then(
+    document.getElementById("Likes").innerHTML = updateLikes)
   }
