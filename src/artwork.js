@@ -17,7 +17,9 @@ class Artwork {
     <h2>${this.title}</h2>
     <h3>${this.artist.name}</h3>
     <h3>${this.year}</h3>
-    <h3>Likes: ${this.likes}</h3>
+
+    <label for="likes">Likes:</label>
+    <div id="Likes"> ${this.likes}</div>
     <button id="like-button" data-id=${this.id}>Add Like</button>
     <p>${this.description}</p>
     <button data-id=${this.id}>Edit</button>

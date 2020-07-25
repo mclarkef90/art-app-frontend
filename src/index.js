@@ -17,11 +17,9 @@ document.addEventListener("DOMContentLoaded", () =>{
   const artworkContainer= document.querySelector("#artwork-container")
 
   artworkContainer.addEventListener("click", (e) =>{
-    const id = parseInt(e.target.dataset.id);
+    const id = e.target.dataset.id;
     const artwork = Artwork.findById(id);
-    console.log(artwork);
-    console.log(e.target.dataset);
-    likes(e)
+    likes(e, artwork)
   })
 
 
@@ -103,7 +101,23 @@ function showArtistForm() {
 
   }
 
-  function likes(e){
+  function likes(e, artwork){
+    e.preventDefault()
+    let updateLikes = parseInt(artwork.likes + 1)
 
-    console.log("Hi")
+    fetch(`http://localhost:3000/api/v1/artworks/${artwork.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+
+      },
+      body: JSON.stringify({
+        likes: updateLikes
+      })
+    })
+    .then(res => res.json())
+    .then(updatedArtwork => updatedArtwork.remove(updateArtwork.likes))
+
+    document.getElementById("Likes").innerHTML = updateLikes
   }
