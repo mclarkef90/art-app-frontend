@@ -3,9 +3,14 @@ const artistsURL= "http://localhost:3000/api/v1/artists"
 
 document.addEventListener("DOMContentLoaded", () =>{
   getArtworks()
-  getArtists()
 
-  const createArtistForm= document.querySelector("#create-artist-form")
+  const artistIndexPage= document.querySelector("#artist-index")
+  artistIndexPage.addEventListener("click", () => getArtists())
+
+  const newArtistPage= document.querySelector("#new-artist")
+  newArtistPage.addEventListener("click", () => showArtistForm())
+
+  const createArtistForm= document.querySelector("#new-artist-form-container")
 
   createArtistForm.addEventListener("submit", (e) => createFormHandler(e))
 })
@@ -66,3 +71,22 @@ function postFetch(name, biography) {
    document.querySelector('#artist-container').innerHTML += artistDisplay
   })
 }
+
+function showArtistForm() {
+
+    const newForm = `
+    <form id="create-artist-form" style="">
+    <h2>Add an Artist</h2>
+    <label for="name">Name:</label>
+    <input id="input-name" type="text" name="name" value="" class="input-text">
+    <br><br>
+    <label for="biography">Biography:</label>
+    <textarea id="input-biography" name="Biography:" value=""></textarea>
+    <br><br>
+    <input id="create-button" type="submit" name="submit" value="Add Artist" class="submit">
+    </form>
+    `
+
+    document.getElementById("new-artist-form-container").innerHTML += newForm
+
+  }

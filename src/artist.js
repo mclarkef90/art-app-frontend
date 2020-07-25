@@ -13,6 +13,7 @@ class Artist {
     <p>${this.biography}</p>
     </div>`
   }
+
 }
 
 Artist.all= []
