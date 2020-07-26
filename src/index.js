@@ -2,13 +2,14 @@ const artworksURL= "http://localhost:3000/api/v1/artworks"
 const artistsURL= "http://localhost:3000/api/v1/artists"
 
 
-
-
 document.addEventListener("DOMContentLoaded", () =>{
+  console.log("DOM Loaded")
   getArtworks()
 
   const artistIndexPage= document.querySelector("#artist-index")
   artistIndexPage.addEventListener("click", () => getArtists())
+
+
 
   const newArtistPage= document.querySelector("#new-artist")
   newArtistPage.addEventListener("click", () => showArtistForm())
@@ -37,12 +38,14 @@ function getArtworks() {
 
       document.querySelector('#artwork-container').innerHTML += newArtwork.renderArtworkCard()
 
+
     });
   })
 
 }
 
 function getArtists(){
+
   fetch(artistsURL)
   .then(response => response.json())
   .then(artists => {
