@@ -7,14 +7,22 @@ const createArtistForm= document.querySelector("#new-artist-form-container")
 const showArt= document.querySelector("#showArt")
 const showArtists= document.querySelector("#showArtists")
 const showForm= document.querySelector("#showForm")
+const startButton= document.querySelector("#start-button")
 
 let artists= false
 let art= false
 let form= false
 
 document.addEventListener("DOMContentLoaded", () =>{
-    getArtworkData()
+    getArtworkData();
+
   })
+
+startButton.addEventListener("click", () => {
+  getThreeRandom();
+})
+
+
 
 showArt.addEventListener('click', () => {
   art = !art
@@ -184,8 +192,6 @@ function showArtistForm() {
 
 
     const artCard= `
-
-
     <div class="col-md-4">
     <div class="card mb-4 shadow-sm">
 
@@ -210,7 +216,7 @@ function showArtistForm() {
 
     document.querySelector('#landing-display').innerHTML += artCard})
 
-    debugger
+
     const artwork1 = Artwork.findById(randNum1);
     const artwork2 = Artwork.findById(randNum2);
     const artwork3 = Artwork.findById(randNum3);
