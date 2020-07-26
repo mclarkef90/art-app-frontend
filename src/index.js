@@ -18,8 +18,9 @@ document.addEventListener("DOMContentLoaded", () =>{
 
   createArtistForm.addEventListener("submit", (e) => createFormHandler(e))
 
-  const artworkContainer= document.querySelector("#artwork-container")
+  const artworkContainer= document.getElementById("artwork-container")
     artworkContainer.addEventListener("click", (e) =>{
+      console.log("hi")
       const id = e.target.dataset.id;
       const artwork = Artwork.findById(id);
       likes(e, artwork)
