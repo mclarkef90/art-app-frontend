@@ -1,5 +1,6 @@
 const artworksURL= "http://localhost:3000/api/v1/artworks"
 const artistsURL= "http://localhost:3000/api/v1/artists"
+const landingDisplay = document.querySelector('#landing-display')
 const artworkContainer = document.querySelector('#artwork-container')
 const artistContainer = document.querySelector('#artist-container')
 const createArtistForm= document.querySelector("#new-artist-form-container")
@@ -10,6 +11,10 @@ const showForm= document.querySelector("#showForm")
 let artists= false
 let art= false
 let form= false
+
+document.addEventListener("DOMContentLoaded", () =>{
+    getArtworkData()
+  })
 
 showArt.addEventListener('click', () => {
   art = !art
@@ -51,24 +56,16 @@ showForm.addEventListener('click', () => {
   }
 })
 
-
-
-
-//
   const create= document.querySelector("#create-button")
-
   createArtistForm.addEventListener("submit", (e) => createFormHandler(e))
-//
-//   const artworkContainer= document.getElementById("artwork-container")
-//     artworkContainer.addEventListener("click", (e) =>{
-//       console.log("hi")
-//       const id = e.target.dataset.id;
-//       const artwork = Artwork.findById(id);
-//       likes(e, artwork)
-//   })
-//
-//
-// });
+
+  artworkContainer.addEventListener("click", (e) =>{
+      console.log("hi")
+
+      const id = e.target.dataset.id;
+      const artwork = Artwork.findById(id);
+      likes(e, artwork)
+  })
 
 function getArtworks() {
   fetch(artworksURL)
@@ -150,23 +147,85 @@ function showArtistForm() {
     document.getElementById("new-artist-form-container").innerHTML += newForm
 
   }
-//
-//   function likes(e, artwork){
-//     e.preventDefault()
-//     let updateLikes = parseInt(artwork.likes + 1)
-//
-//     fetch(`http://localhost:3000/api/v1/artworks/${artwork.id}`, {
-//       method: "PATCH",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Accept: "application/json"
-//
-//       },
-//       body: JSON.stringify({
-//         likes: updateLikes
-//       })
-//     })
-//     .then(res => res.json())
-//     .then(
-//     document.getElementById("Likes").innerHTML = updateLikes)
-//   }
+
+  function likes(e, artwork){
+    e.preventDefault()
+
+    let updateLikes = parseInt(artwork.likes + 1)
+
+    fetch(`http://localhost:3000/api/v1/artworks/${artwork.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+
+      },
+      body: JSON.stringify({
+        likes: updateLikes
+      })
+    })
+    .then(res => res.json())
+    .then(
+    document.getElementById("Likes").innerHTML = updateLikes)
+  }
+
+  function getThreeRandom() {
+    const total= Artwork.artworkTotal()
+    const array= Artwork.all
+
+    const randNum1= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+    const randNum2= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+    const randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+
+    const subarray= [array[randNum1], array[randNum2], array[randNum3]]
+    subarray.forEach(element => {
+
+
+
+
+    const artCard= `
+
+
+    <div class="col-md-4">
+    <div class="card mb-4 shadow-sm">
+
+        <img src="${element.image_url}" class="card-img-top" alt="...">
+        <h5 class="card-title">${element.title}</h5>
+        <div class="card-body">
+          <p class="card-text">
+            ${element.artist.name}<br>
+            ${element.year}<br></p>
+
+            <div id="Likes">Likes: ${element.likes}</div>
+            <button id="like-button" class="btn btn-link" data-id=${element.id}>♡</button>
+
+        <div class="d-flex justify-content-between align-items-center">
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>`
+
+    document.querySelector('#landing-display').innerHTML += artCard})
+
+    debugger
+    const artwork1 = Artwork.findById(randNum1);
+    const artwork2 = Artwork.findById(randNum2);
+    const artwork3 = Artwork.findById(randNum3);
+  }
+
+  function getArtworkData() {
+    fetch(artworksURL)
+    .then(response => response.json())
+    .then(artworks => {
+      artworks.data.forEach(artwork => {
+
+        let newArtwork= new Artwork(artwork, artwork.attributes)
+
+
+      });
+    })
+
+  }
