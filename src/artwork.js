@@ -15,7 +15,7 @@ class Artwork {
     return`
     <div class="col-md-4">
     <div class="card mb-4 shadow-sm">
-
+        <div id= "${this.id}">
         <img src="${this.image_url}" class="card-img-top" alt="...">
         <h5 class="card-title">${this.title}</h5>
         <div class="card-body">
@@ -23,7 +23,7 @@ class Artwork {
             ${this.artist.name}<br>
             ${this.year}<br></p>
             <div id="Likes">Likes: ${this.likes}</div>
-            <button id="like-button" class="btn btn-link" data-id=${this.id}>♡</button>
+          
             <div class="d-flex justify-content-between align-items-center">
           </div>
         </div>
