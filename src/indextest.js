@@ -66,13 +66,11 @@ showForm.addEventListener('click', () => {
   const create= document.querySelector("#create-button")
   createArtistForm.addEventListener("submit", (e) => createFormHandler(e))
 
-  //artworkContainer.addEventListener("click", (e) =>{
-  artCard.on("click", function(){
+  artworkContainer.addEventListener("click", (e) =>{
       console.log("hi")
-      // const id = e.target.dataset.id;
-      // const artwork = Artwork.findById(id);
-      debugger
-      // likes(e, artwork)
+      const id = e.target.dataset.id;
+      const artwork = Artwork.findById(id);
+      likes(e, artwork)
   })
 
 function getArtworks() {
