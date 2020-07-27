@@ -8,6 +8,8 @@ const showArt= document.querySelector("#showArt")
 const showArtists= document.querySelector("#showArtists")
 const showForm= document.querySelector("#showForm")
 const startButton= document.querySelector("#start-button")
+const likeButton= document.getElementById("like-button")
+const artCard= document.querySelector(".card mb-4 shadow-sm")
 
 let artists= false
 let art= false
@@ -15,14 +17,11 @@ let form= false
 
 document.addEventListener("DOMContentLoaded", () =>{
     getArtworkData();
-
   })
 
 startButton.addEventListener("click", () => {
   getThreeRandom();
 })
-
-
 
 showArt.addEventListener('click', () => {
   art = !art
@@ -67,12 +66,13 @@ showForm.addEventListener('click', () => {
   const create= document.querySelector("#create-button")
   createArtistForm.addEventListener("submit", (e) => createFormHandler(e))
 
-  artworkContainer.addEventListener("click", (e) =>{
+  //artworkContainer.addEventListener("click", (e) =>{
+  artCard.on("click", function(){
       console.log("hi")
-
-      const id = e.target.dataset.id;
-      const artwork = Artwork.findById(id);
-      likes(e, artwork)
+      // const id = e.target.dataset.id;
+      // const artwork = Artwork.findById(id);
+      debugger
+      // likes(e, artwork)
   })
 
 function getArtworks() {
@@ -84,15 +84,11 @@ function getArtworks() {
       let newArtwork= new Artwork(artwork, artwork.attributes)
 
       document.querySelector('#artwork-container').innerHTML += newArtwork.renderArtworkCard()
-
-
     });
   })
-
 }
 
 function getArtists(){
-
   fetch(artistsURL)
   .then(response => response.json())
   .then(artists => {
@@ -122,8 +118,6 @@ function postFetch(name, biography) {
    .then(response => response.json())
    .then(artist => {console.log(artist);
 
-
-
      const artistDisplay= `
      <br>
       <h3>New Artist Added!</h3>
@@ -133,7 +127,6 @@ function postFetch(name, biography) {
       </div>`
 
    document.querySelector('#show-created-artist').innerHTML += artistDisplay
-
   })
 }
 
@@ -174,7 +167,7 @@ function showArtistForm() {
     })
     .then(res => res.json())
     .then(
-    document.getElementById("Likes").innerHTML = updateLikes)
+    document.getElementById("Likes").innerHTML = `Likes: ${updateLikes}`)
   }
 
   function getThreeRandom() {
@@ -182,14 +175,21 @@ function showArtistForm() {
     const array= Artwork.all
 
     const randNum1= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-    const randNum2= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-    const randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+    let randNum2= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+    let randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+
+    if(randNum1 === randNum2){
+      randNum2= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+    }
+    if (randNum2 === randNum3) {
+      randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+    }
+    if (randNum3 === randNum1){
+      randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+    }
 
     const subarray= [array[randNum1], array[randNum2], array[randNum3]]
     subarray.forEach(element => {
-
-
-
 
     const artCard= `
     <div class="col-md-4">
@@ -201,25 +201,20 @@ function showArtistForm() {
           <p class="card-text">
             ${element.artist.name}<br>
             ${element.year}<br></p>
-
             <div id="Likes">Likes: ${element.likes}</div>
             <button id="like-button" class="btn btn-link" data-id=${element.id}>♡</button>
-
-        <div class="d-flex justify-content-between align-items-center">
-
-
-
+            <div class="d-flex justify-content-between align-items-center">
           </div>
         </div>
       </div>
     </div>`
 
-    document.querySelector('#landing-display').innerHTML += artCard})
-
-
-    const artwork1 = Artwork.findById(randNum1);
-    const artwork2 = Artwork.findById(randNum2);
-    const artwork3 = Artwork.findById(randNum3);
+    document.querySelector('#landing-display').innerHTML += artCard;
+    document.querySelector('#like-button').addEventListener("click", function(e){
+      const id = e.target.dataset.id;
+      const artwork = Artwork.findById(id);
+      likes(e, artwork)})
+    })
   }
 
   function getArtworkData() {
@@ -227,11 +222,7 @@ function showArtistForm() {
     .then(response => response.json())
     .then(artworks => {
       artworks.data.forEach(artwork => {
-
         let newArtwork= new Artwork(artwork, artwork.attributes)
-
-
       });
     })
-
   }
