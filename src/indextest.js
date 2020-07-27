@@ -4,6 +4,7 @@ const landingDisplay = document.querySelector('#landing-display')
 const artworkContainer = document.querySelector('#artwork-container')
 const artistContainer = document.querySelector('#artist-container')
 const createArtistForm= document.querySelector("#new-artist-form-container")
+const home= document.querySelector("#home")
 const showArt= document.querySelector("#showArt")
 const showArtists= document.querySelector("#showArtists")
 const showForm= document.querySelector("#showForm")
@@ -14,6 +15,7 @@ const artCard= document.querySelector(".card mb-4 shadow-sm")
 let artists= false
 let art= false
 let form= false
+let homev= false
 
 
 // document.addEventListener("DOMContentLoaded", () =>{
@@ -29,6 +31,19 @@ let form= false
 // if (home){
 //   getThreeRandom()
 // }
+
+home.addEventListener('click', () => {
+  homev= !homev
+  if (home) {
+    artworkContainer.style.display = 'none';
+    artistContainer.style.display = 'none';
+    createArtistForm.style.display = 'none';
+    landingDisplay.style.display= 'block';
+    }
+  else {
+  }
+})
+
 
 
 showArt.addEventListener('click', () => {
