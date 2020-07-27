@@ -15,13 +15,21 @@ let artists= false
 let art= false
 let form= false
 
-document.addEventListener("DOMContentLoaded", () =>{
-    getArtworkData();
-  })
 
-startButton.addEventListener("click", () => {
-  getThreeRandom();
-})
+// document.addEventListener("DOMContentLoaded", () =>{
+//
+//   })
+
+
+
+// startButton.addEventListener("click", () => {
+//   getThreeRandom();
+// })
+
+// if (home){
+//   getThreeRandom()
+// }
+
 
 showArt.addEventListener('click', () => {
   art = !art
@@ -30,6 +38,7 @@ showArt.addEventListener('click', () => {
     artworkContainer.style.display = 'auto';
     artistContainer.style.display = 'none';
     createArtistForm.style.display = 'none';
+    landingDisplay.style.display= 'none';
     }
   else {
     artworkContainer.style.display = 'none'
@@ -38,12 +47,12 @@ showArt.addEventListener('click', () => {
 
 showArtists.addEventListener('click', () => {
   artists = !artists
-
   getArtists()
   if (artists) {
     artistContainer.style.display = 'block';
     artworkContainer.style.display = 'none';
     createArtistForm.style.display = 'none';
+    landingDisplay.style.display= 'none';
     }
   else {
     artistContainer.style.display = 'none'
@@ -57,6 +66,7 @@ showForm.addEventListener('click', () => {
     createArtistForm.style.display = 'block';
       artworkContainer.style.display = 'none';
       artistContainer.style.display = 'none';
+      landingDisplay.style.display= 'none';
     }
   else {
     createArtistForm.style.display = 'none'
@@ -168,59 +178,109 @@ function showArtistForm() {
     document.getElementById("Likes").innerHTML = `Likes: ${updateLikes}`)
   }
 
-  function getThreeRandom() {
-    const total= Artwork.artworkTotal()
-    const array= Artwork.all
+  // function getThreeRandom() {
+  //
+  //   const total= Artwork.artworkTotal()
+  //   const array= Artwork.all
+  //
+  //   const randNum1= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+  //   let randNum2= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+  //   let randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+  //
+  //   if(randNum1 === randNum2){
+  //     randNum2= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+  //   }
+  //   if (randNum2 === randNum3) {
+  //     randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+  //   }
+  //   if (randNum3 === randNum1){
+  //     randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+  //   }
+  //
+  //   const subarray= [array[randNum1], array[randNum2], array[randNum3]]
+  //   subarray.forEach(element => {
+  //
+  //   const artCard= `
+  //   <div class="col-md-4">
+  //   <div class="card mb-4 shadow-sm">
+  //
+  //       <img src="${element.image_url}" class="card-img-top" alt="...">
+  //       <h5 class="card-title">${element.title}</h5>
+  //       <div class="card-body">
+  //         <p class="card-text">
+  //           ${element.artist.name}<br>
+  //           ${element.year}<br></p>
+  //           <div id="Likes">Likes: ${element.likes}</div>
+  //           <button id="like-button" class="btn btn-link" data-id=${element.id}>♡</button>
+  //           <div class="d-flex justify-content-between align-items-center">
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>`
+  //
+  //   document.querySelector('#landing-display').innerHTML += artCard;
+  //   document.querySelector('#like-button').addEventListener("click", function(e){
+  //     const id = e.target.dataset.id;
+  //     const artwork = Artwork.findById(id);
+  //     likes(e, artwork)})
+  //   })
+  // }
 
-    const randNum1= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-    let randNum2= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-    let randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-
-    if(randNum1 === randNum2){
-      randNum2= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-    }
-    if (randNum2 === randNum3) {
-      randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-    }
-    if (randNum3 === randNum1){
-      randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-    }
-
-    const subarray= [array[randNum1], array[randNum2], array[randNum3]]
-    subarray.forEach(element => {
-
-    const artCard= `
-    <div class="col-md-4">
-    <div class="card mb-4 shadow-sm">
-
-        <img src="${element.image_url}" class="card-img-top" alt="...">
-        <h5 class="card-title">${element.title}</h5>
-        <div class="card-body">
-          <p class="card-text">
-            ${element.artist.name}<br>
-            ${element.year}<br></p>
-            <div id="Likes">Likes: ${element.likes}</div>
-            <button id="like-button" class="btn btn-link" data-id=${element.id}>♡</button>
-            <div class="d-flex justify-content-between align-items-center">
-          </div>
-        </div>
-      </div>
-    </div>`
-
-    document.querySelector('#landing-display').innerHTML += artCard;
-    document.querySelector('#like-button').addEventListener("click", function(e){
-      const id = e.target.dataset.id;
-      const artwork = Artwork.findById(id);
-      likes(e, artwork)})
-    })
-  }
-
-  function getArtworkData() {
+  function getArtworkData(callback) {
     fetch(artworksURL)
     .then(response => response.json())
     .then(artworks => {
       artworks.data.forEach(artwork => {
-        let newArtwork= new Artwork(artwork, artwork.attributes)
+        let newArtwork= new Artwork(artwork, artwork.attributes)})
+
+          const total= Artwork.artworkTotal()
+          const array= Artwork.all
+
+          const randNum1= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+          let randNum2= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+          let randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+
+          if(randNum1 === randNum2){
+            randNum2= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+          }
+          if (randNum2 === randNum3) {
+            randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+          }
+          if (randNum3 === randNum1){
+            randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
+          }
+
+          const subarray= [array[randNum1], array[randNum2], array[randNum3]]
+          subarray.forEach(element => {
+
+          const artCard= `
+          <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+
+              <img src="${element.image_url}" class="card-img-top" alt="...">
+              <h5 class="card-title">${element.title}</h5>
+              <div class="card-body">
+                <p class="card-text">
+                  ${element.artist.name}<br>
+                  ${element.year}<br></p>
+                  <div id="Likes">Likes: ${element.likes}</div>
+                  <button id="like-button" class="btn btn-link" data-id=${element.id}>♡</button>
+                  <div class="d-flex justify-content-between align-items-center">
+                </div>
+              </div>
+            </div>
+          </div>`
+
+          document.querySelector('#landing-display').innerHTML += artCard;
+          document.querySelector('#like-button').addEventListener("click", function(e){
+            const id = e.target.dataset.id;
+            const artwork = Artwork.findById(id);
+            likes(e, artwork)})
+
       });
     })
+
+
   }
+
+  getArtworkData()
