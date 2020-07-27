@@ -174,7 +174,6 @@ function showArtistForm() {
 
   function likes(e, artwork){
     e.preventDefault()
-
     let updateLikes = parseInt(artwork.likes + 1)
 
     fetch(`http://localhost:3000/api/v1/artworks/${artwork.id}`, {
@@ -185,12 +184,14 @@ function showArtistForm() {
 
       },
       body: JSON.stringify({
-        likes: updateLikes
+        likes: updateLikes,
+
       })
     })
     .then(res => res.json())
     .then(
-    document.getElementById("Likes").innerHTML = `Likes: ${updateLikes}`)
+      document.getElementById(artwork.id).querySelector("#Likes").innerHTML= `Likes: ${updateLikes}`
+    )
   }
 
   // function getThreeRandom() {
@@ -251,27 +252,14 @@ function showArtistForm() {
           const total= Artwork.artworkTotal()
           const array= Artwork.all
 
-          const randNum1= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-          let randNum2= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-          let randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-
-          if(randNum1 === randNum2){
-            randNum2= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-          }
-          if (randNum2 === randNum3) {
-            randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-          }
-          if (randNum3 === randNum1){
-            randNum3= (Math.floor(Math.random() * ((array.length) - 0 + 1) ) + 0).toString()
-          }
-
-          const subarray= [array[randNum1], array[randNum2], array[randNum3]]
+          const subarray= _.sample(array, 3)
+          console.log(subarray)
           subarray.forEach(element => {
 
           const artCard= `
           <div class="col-md-4">
           <div class="card mb-4 shadow-sm">
-
+              <div id= "${element.id}">
               <img src="${element.image_url}" class="card-img-top" alt="...">
               <h5 class="card-title">${element.title}</h5>
               <div class="card-body">
@@ -286,11 +274,22 @@ function showArtistForm() {
             </div>
           </div>`
 
-          document.querySelector('#landing-display').innerHTML += artCard;
-          document.querySelector('#like-button').addEventListener("click", function(e){
+          const main= document.querySelector('#landing-display')
+          const divElement = document.createElement('div');
+          divElement.innerHTML += artCard;
+          main.appendChild(divElement)
+          divElement.addEventListener("click", function(e){
+
             const id = e.target.dataset.id;
             const artwork = Artwork.findById(id);
-            likes(e, artwork)})
+            likes(e, artwork)});
+
+          //document.querySelector('#landing-display').innerHTML += artCard;
+          // document.querySelector('#like-button').addEventListener("click", function(e){
+          // artCard.addEventListener("click", function(e){
+          //   const id = e.target.dataset.id;
+          //   const artwork = Artwork.findById(id);
+          //   likes(e, artwork)})
 
       });
     })
