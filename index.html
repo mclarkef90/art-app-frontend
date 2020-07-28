@@ -86,9 +86,17 @@
 
 <main role="main">
   <br>
+  <br>
 
 <div id="show-created-artwork"></div>
-<div id="artist-container"></div>
+<div id="artist-container">
+  <div class="search-container">
+    <form action="/action_page.php">
+      <input type="text" placeholder="Search Artists" name="search" id="search-entry">
+      <button id="search-button" type="submit">Submit</button>
+    </form>
+  </div>
+</div>
 <div id="new-artist-form-container"></div>
 <div id="show-created-artist"></div>
 

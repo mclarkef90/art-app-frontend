@@ -7,6 +7,7 @@ const artworkContainer = document.querySelector('#artwork-container')
 const artistContainer = document.querySelector('#artist-container')
 const createArtistForm= document.querySelector("#new-artist-form-container")
 const showArtwork= document.querySelector("#show-created-artist")
+const searchBar= document.querySelector(".search-container")
 
 //Index.html Nav Bar Links
 const home= document.querySelector("#home")
@@ -31,6 +32,7 @@ home.addEventListener('click', () => {
     artistContainer.style.display = 'none';
     createArtistForm.style.display = 'none';
     showArtwork.style.display= 'none';
+    searchBar.style.display= 'none';
     landingDisplay.style.display= 'block';
     }
   else {}
@@ -45,6 +47,7 @@ showArt.addEventListener('click', () => {
     createArtistForm.style.display = 'none';
     landingDisplay.style.display= 'none';
     showArtwork.style.display= 'none';
+    searchBar.style.display= 'none';
     }
   else {
     artworkContainer.style.display = 'none' }
@@ -54,6 +57,7 @@ showArtists.addEventListener('click', () => {
   artists = !artists
   getArtists()
   if (artists) {
+    searchBar.style.display= 'auto';
     artistContainer.style.display = 'block';
     showArtwork.style.display= 'auto';
     artworkContainer.style.display = 'none';
@@ -73,6 +77,7 @@ showForm.addEventListener('click', () => {
       artistContainer.style.display = 'none';
       landingDisplay.style.display= 'none';
       showArtwork.style.display= 'none';
+      searchBar.style.display= 'none';
     }
   else {
     createArtistForm.style.display = 'none'}
@@ -106,7 +111,7 @@ function getArtists(){
       <div class="col-md-4">
       <div class="card mb-4 shadow-sm">
           <div id= "${element.id}">
-          <h5 class="card-title">${element.name}</h5>
+          <h5 class="card-title" id="artist-name">${element.name} </h5>
           <div class="card-body">
 
             <h2 class="mb-0">
@@ -150,6 +155,8 @@ function getArtists(){
         </div>
       </div>`
 
+
+
     const main= document.querySelector('#artist-container')
     const divElement = document.createElement('div');
     divElement.innerHTML += artistCard;
@@ -165,7 +172,6 @@ function getArtists(){
 function createArtworkFormHandler(e, artist){
 
   console.log(e, artist)
-  debugger
   e.preventDefault();
   const artistId= artist.id
   const likes= "0"
@@ -173,12 +179,10 @@ function createArtworkFormHandler(e, artist){
   const artworkYear= document.querySelector("#input-year"+artistId).value
   const artworkImage= document.querySelector("#input-image-url"+artistId).value
   const artworkDescription= document.querySelector("#input-description"+artistId).value
-  debugger
   postArtworkFetch(artistId, likes, artworkTitle, artworkYear, artworkImage, artworkDescription)
 }
 
 function postArtworkFetch(artist_id, likes, title, year, image_url, description){
-  debugger
   const bodyData= {artist_id, likes, title, year, image_url, description}
 
   fetch(artworksURL, {
@@ -350,6 +354,98 @@ function getArtworkData() {
       });
     })
   }
+
+  //Search Artists Search Bar
+  const filterItems = (arr, query) => {
+    return arr.filter(el => el.toLowerCase().indexOf(query.toLowerCase()) !== -1)
+  }
+
+searchBar.addEventListener("submit", function(e) {
+  e.preventDefault();
+  const searchEntry= document.querySelector("#search-entry").value
+  console.log(searchEntry)
+  filterForResults(searchEntry)
+})
+
+function filterForResults(searchEntry){
+
+  const array= Artist.all
+
+  let results = []
+  results= array.filter(el => el.name.toLowerCase().indexOf(searchEntry.toLowerCase()) !== -1)
+
+  console.log(results)
+
+  artistContainer.innerHTML = "";
+
+  results.forEach(element => {
+  const artistCard= `
+  <div class="accordion" id="accordion">
+  <div class="col-md-4">
+  <div class="card mb-4 shadow-sm">
+      <div id= "${element.id}">
+      <h5 class="card-title" id="artist-name">${element.name} </h5>
+      <div class="card-body">
+
+        <h2 class="mb-0">
+          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse1${element.id}" aria-expanded="true" aria-controls="collapseOne">
+            Add Artwork
+          </button>
+        </h2>
+        <div id="collapse1${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            <form id="create-artwork-form" class="form${element.id}" data-id="${element.id}" style="">
+            <h2>Add an Artwork</h2>
+            <label for="name">Title:</label>
+            <input id="input-title${element.id}" type="text" name="title" value="" class="input-text">
+            <br><br>
+            <label for="name">Year:</label>
+            <input id="input-year${element.id}" type="text" name="year" value="" class="input-text">
+            <br><br>
+            <label for="name">Image URL:</label>
+            <input id="input-image-url${element.id}" type="text" name="image_url" value="" class="input-text">
+            <br><br>
+            <label for="description">Description:</label>
+            <textarea id="input-description${element.id}" name="description:" value=""></textarea>
+            <br><br>
+            <input id="create-artwork-button" type="submit" name="submit" value="Add Artwork" class="submit">
+            </form>
+            </div>
+        </div>
+
+          <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${element.id}" aria-expanded="true" aria-controls="collapseOne">
+              Biography
+            </button>
+          </h2>
+          <div id="collapse${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+              ${element.biography}</div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+        </div>
+      </div>
+    </div>
+  </div>`
+
+      const main= document.querySelector('#artist-container')
+      const divElement = document.createElement('div');
+      divElement.innerHTML += artistCard;
+      main.appendChild(divElement)
+      divElement.addEventListener("submit", function(e){
+        const id = e.target.dataset.id;
+        const artist = Artist.findById(id);
+        createArtworkFormHandler(e, artist)})
+      });
+
+
+
+
+
+}
+
+
+
 
   //Homepage
 
