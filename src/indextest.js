@@ -6,6 +6,7 @@ const landingDisplay = document.querySelector('#landing-display')
 const artworkContainer = document.querySelector('#artwork-container')
 const artistContainer = document.querySelector('#artist-container')
 const createArtistForm= document.querySelector("#new-artist-form-container")
+const showArtwork= document.querySelector("#show-created-artist")
 
 //Index.html Nav Bar Links
 const home= document.querySelector("#home")
@@ -16,6 +17,7 @@ let artists= false
 let art= false
 let form= false
 let homeV= false
+let jumbotron= false
 
 //Event Listener Buttons
 const likeButton= document.getElementById("like-button")
@@ -28,6 +30,7 @@ home.addEventListener('click', () => {
     artworkContainer.style.display = 'none';
     artistContainer.style.display = 'none';
     createArtistForm.style.display = 'none';
+    showArtwork.style.display= 'none';
     landingDisplay.style.display= 'block';
     }
   else {}
@@ -41,6 +44,7 @@ showArt.addEventListener('click', () => {
     artistContainer.style.display = 'none';
     createArtistForm.style.display = 'none';
     landingDisplay.style.display= 'none';
+    showArtwork.style.display= 'none';
     }
   else {
     artworkContainer.style.display = 'none' }
@@ -51,6 +55,7 @@ showArtists.addEventListener('click', () => {
   getArtists()
   if (artists) {
     artistContainer.style.display = 'block';
+    showArtwork.style.display= 'auto';
     artworkContainer.style.display = 'none';
     createArtistForm.style.display = 'none';
     landingDisplay.style.display= 'none';
@@ -67,6 +72,7 @@ showForm.addEventListener('click', () => {
       artworkContainer.style.display = 'none';
       artistContainer.style.display = 'none';
       landingDisplay.style.display= 'none';
+      showArtwork.style.display= 'none';
     }
   else {
     createArtistForm.style.display = 'none'}
@@ -110,25 +116,24 @@ function getArtists(){
             </h2>
             <div id="collapse1${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
               <div class="card-body">
-                <form id="create-artwork-form" data-id= "${element.id}" style="">
+                <form id="create-artwork-form" class="form${element.id}" data-id="${element.id}" style="">
                 <h2>Add an Artwork</h2>
                 <label for="name">Title:</label>
-                <input id="input-title" type="text" name="title" value="" class="input-text">
+                <input id="input-title${element.id}" type="text" name="title" value="" class="input-text">
                 <br><br>
                 <label for="name">Year:</label>
-                <input id="input-year" type="text" name="year" value="" class="input-text">
+                <input id="input-year${element.id}" type="text" name="year" value="" class="input-text">
                 <br><br>
                 <label for="name">Image URL:</label>
-                <input id="input-image-url" type="text" name="image_url" value="" class="input-text">
+                <input id="input-image-url${element.id}" type="text" name="image_url" value="" class="input-text">
                 <br><br>
                 <label for="description">Description:</label>
-                <textarea id="input-description" name="description:" value=""></textarea>
+                <textarea id="input-description${element.id}" name="description:" value=""></textarea>
                 <br><br>
                 <input id="create-artwork-button" type="submit" name="submit" value="Add Artwork" class="submit">
                 </form>
                 </div>
             </div>
-
 
               <h2 class="mb-0">
                 <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${element.id}" aria-expanded="true" aria-controls="collapseOne">
@@ -145,7 +150,6 @@ function getArtists(){
         </div>
       </div>`
 
-
     const main= document.querySelector('#artist-container')
     const divElement = document.createElement('div');
     divElement.innerHTML += artistCard;
@@ -159,19 +163,24 @@ function getArtists(){
 }
 
 function createArtworkFormHandler(e, artist){
+
   console.log(e, artist)
+  debugger
   e.preventDefault();
   const artistId= artist.id
-  const artworkTitle= document.querySelector("#input-title").value
-  const artworkYear= document.querySelector("#input-year").value
-  const artworkImage= document.querySelector("#input-image-url").value
-  const artworkDescription= document.querySelector("#input-description").value
-  postArtworkFetch(artistId, artworkTitle, artworkYear, artworkImage, artworkDescription)
+  const likes= "0"
+  const artworkTitle= document.querySelector("#input-title"+artistId).value
+  const artworkYear= document.querySelector("#input-year"+artistId).value
+  const artworkImage= document.querySelector("#input-image-url"+artistId).value
+  const artworkDescription= document.querySelector("#input-description"+artistId).value
+  debugger
+  postArtworkFetch(artistId, likes, artworkTitle, artworkYear, artworkImage, artworkDescription)
 }
 
-function postArtworkFetch(artist_id, title, year, image_url, description){
-  const bodyData= {artist_id, title, year, image_url, description}
+function postArtworkFetch(artist_id, likes, title, year, image_url, description){
   debugger
+  const bodyData= {artist_id, likes, title, year, image_url, description}
+
   fetch(artworksURL, {
      method: "POST",
      headers: {'Content-Type': 'application/json'},
@@ -180,9 +189,18 @@ function postArtworkFetch(artist_id, title, year, image_url, description){
    .then(response => response.json())
    .then(artwork => {console.log(artwork);
 
-     const artworkDisplay= `
+     const artist= Artist.findById(`${artwork.artist_id}`)
+     const artistName= artist.name
 
-      <h3>New Artwork Added!</h3>
+     const artworkDisplay= `
+     <div data-id=${artwork.id}>
+     <h3>New Artwork Added!</h3>
+     <img src="${artwork.image_url}" alt="...">
+     <p>Title: ${artwork.title}</p>
+     <p>Year: ${artwork.year}</p>
+     <p>Artist: ${artistName} </p>
+     <p>Likes: ${artwork.likes}</p>
+     <p>Description: ${artwork.description}</p>
       `
 
    document.querySelector('#show-created-artwork').innerHTML += artworkDisplay
@@ -288,9 +306,11 @@ function getArtworkData() {
           subarray.forEach(element => {
 
           const artCard= `
-          <div class="accordion" id="accordion">
+
+
           <div class="col-md-4">
           <div class="card mb-4 shadow-sm">
+          <div class="accordion" id="accordion">
               <div id= "${element.id}">
               <img src="${element.image_url}" class="card-img-top" alt="...">
               <h5 class="card-title">${element.title}</h5>
@@ -318,15 +338,15 @@ function getArtworkData() {
             </div>
           </div>`
 
-          const main= document.querySelector('#landing-display')
-          const divElement = document.createElement('div');
-          divElement.innerHTML += artCard;
-          main.appendChild(divElement)
-          divElement.addEventListener("click", function(e){
+            const main= document.querySelector('#landing-display')
 
-            const id = e.target.dataset.id;
-            const artwork = Artwork.findById(id);
-            likes(e, artwork)});
+            main.innerHTML += artCard;
+
+            main.addEventListener("click", function(e){
+
+              const id = e.target.dataset.id;
+              const artwork = Artwork.findById(id);
+              likes(e, artwork)});
       });
     })
   }
