@@ -6,7 +6,7 @@ const landingDisplay = document.querySelector('#landing-display')
 const artworkContainer = document.querySelector('#artwork-container')
 const artistContainer = document.querySelector('#artist-container')
 const createArtistForm= document.querySelector("#new-artist-form-container")
-const showArtwork= document.querySelector("#show-created-artist")
+const showArtist= document.querySelector("#show-created-artist")
 const searchBar= document.querySelector(".search-container")
 
 //Index.html Nav Bar Links
@@ -31,7 +31,7 @@ home.addEventListener('click', () => {
     artworkContainer.style.display = 'none';
     artistContainer.style.display = 'none';
     createArtistForm.style.display = 'none';
-    showArtwork.style.display= 'none';
+    showArtist.style.display= 'none';
     searchBar.style.display= 'none';
     landingDisplay.style.display= 'block';
     }
@@ -46,7 +46,7 @@ showArt.addEventListener('click', () => {
     artistContainer.style.display = 'none';
     createArtistForm.style.display = 'none';
     landingDisplay.style.display= 'none';
-    showArtwork.style.display= 'none';
+    showArtist.style.display= 'none';
     searchBar.style.display= 'none';
     }
   else {
@@ -59,7 +59,7 @@ showArtists.addEventListener('click', () => {
   if (artists) {
     searchBar.style.display= 'auto';
     artistContainer.style.display = 'block';
-    showArtwork.style.display= 'auto';
+    showArtist.style.display= 'none';
     artworkContainer.style.display = 'none';
     createArtistForm.style.display = 'none';
     landingDisplay.style.display= 'none';
@@ -76,7 +76,7 @@ showForm.addEventListener('click', () => {
       artworkContainer.style.display = 'none';
       artistContainer.style.display = 'none';
       landingDisplay.style.display= 'none';
-      showArtwork.style.display= 'none';
+      showArtist.style.display= 'block';
       searchBar.style.display= 'none';
     }
   else {
@@ -438,14 +438,7 @@ function filterForResults(searchEntry){
         createArtworkFormHandler(e, artist)})
       });
 
-
-
-
-
 }
-
-
-
 
   //Homepage
 
