@@ -6,6 +6,7 @@ const landingDisplay = document.querySelector('#landing-display')
 const artworkContainer = document.querySelector('#artwork-container')
 const artistContainer = document.querySelector('#artist-container')
 const createArtistForm= document.querySelector("#new-artist-form-container")
+const showArtwork= document.querySelector("#show-created-artist")
 
 //Index.html Nav Bar Links
 const home= document.querySelector("#home")
@@ -16,6 +17,7 @@ let artists= false
 let art= false
 let form= false
 let homeV= false
+let jumbotron= false
 
 //Event Listener Buttons
 const likeButton= document.getElementById("like-button")
@@ -28,6 +30,7 @@ home.addEventListener('click', () => {
     artworkContainer.style.display = 'none';
     artistContainer.style.display = 'none';
     createArtistForm.style.display = 'none';
+    showArtwork.style.display= 'none';
     landingDisplay.style.display= 'block';
     }
   else {}
@@ -41,6 +44,7 @@ showArt.addEventListener('click', () => {
     artistContainer.style.display = 'none';
     createArtistForm.style.display = 'none';
     landingDisplay.style.display= 'none';
+    showArtwork.style.display= 'none';
     }
   else {
     artworkContainer.style.display = 'none' }
@@ -51,6 +55,7 @@ showArtists.addEventListener('click', () => {
   getArtists()
   if (artists) {
     artistContainer.style.display = 'block';
+    showArtwork.style.display= 'auto';
     artworkContainer.style.display = 'none';
     createArtistForm.style.display = 'none';
     landingDisplay.style.display= 'none';
@@ -67,6 +72,7 @@ showForm.addEventListener('click', () => {
       artworkContainer.style.display = 'none';
       artistContainer.style.display = 'none';
       landingDisplay.style.display= 'none';
+      showArtwork.style.display= 'none';
     }
   else {
     createArtistForm.style.display = 'none'}
@@ -171,7 +177,7 @@ function createArtworkFormHandler(e, artist){
 
 function postArtworkFetch(artist_id, title, year, image_url, description){
   const bodyData= {artist_id, title, year, image_url, description}
-  debugger
+  
   fetch(artworksURL, {
      method: "POST",
      headers: {'Content-Type': 'application/json'},
@@ -180,9 +186,18 @@ function postArtworkFetch(artist_id, title, year, image_url, description){
    .then(response => response.json())
    .then(artwork => {console.log(artwork);
 
-     const artworkDisplay= `
+     const artist= Artist.findById(`${artwork.artist_id}`)
+     const artistName= artist.name
 
-      <h3>New Artwork Added!</h3>
+     const artworkDisplay= `
+     <div data-id=${artwork.id}>
+     <h3>New Artwork Added!</h3>
+     <img src="${artwork.image_url}" alt="...">
+     <p>Title: ${artwork.title}</p>
+     <p>Year: ${artwork.year}</p>
+     <p>Artist: ${artistName} </p>
+     <p>Likes: ${artwork.likes}</p>
+     <p>Description: ${artwork.description}</p>
       `
 
    document.querySelector('#show-created-artwork').innerHTML += artworkDisplay
