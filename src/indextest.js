@@ -90,10 +90,58 @@ function getArtists(){
   .then(response => response.json())
   .then(artists => {
     artists.data.forEach(artist => {
-      let newArtist= new Artist(artist, artist.attributes)
-    document.querySelector('#artist-container').innerHTML += newArtist.renderArtistCard()
+      let newArtist= new Artist(artist, artist.attributes)})
+
+      const artistArray= Artist.all
+      debugger
+      artistArray.forEach(element => {
+      const artistCard= `
+      <div class="accordion" id="accordion">
+      
+      <div class="album py-5 bg-light" >
+        <div class="container"  >
+          <div class="card-deck">
+          <div  class="row"
+
+      <div class="col-md-4">
+      <div class="card mb-4 shadow-sm">
+          <div id= "${element.id}">
+          <h5 class="card-title">${element.name}</h5>
+          <div class="card-body">
+            <p class="card-text">
+            </p>
+            <button id="add-artwork-button" class="btn btn-link" data-id=${element.id}>Add Artwork</button>
+              <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Biography
+                </button>
+              </h2>
+              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                  ${element.biography}</div>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+            </div>
+          </div>
+        </div>
+      </div>`
+
+
+    const main= document.querySelector('#artist-container')
+    const divElement = document.createElement('div');
+    divElement.innerHTML += artistCard;
+    main.appendChild(divElement)
+    divElement.addEventListener("click", function(e){
+
+      const id = e.target.dataset.id;
+      const artist = Artist.findById(id);
+      displayNewArtworkForm(e, artist)})
+    });
   });
-  })
+}
+
+function displayNewArtworkForm(e, artist){
+  console.log(e, artist)
 }
 
 //New Artist Form
@@ -188,7 +236,6 @@ function getArtworkData() {
       artworks.data.forEach(artwork => {
         let newArtwork= new Artwork(artwork, artwork.attributes)})
 
-          const total= Artwork.artworkTotal()
           const array= Artwork.all
 
           const subarray= _.sample(array, 3)
@@ -211,7 +258,7 @@ function getArtworkData() {
 
                   <h2 class="mb-0">
                     <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                      Description
+                      Learn More
                     </button>
                   </h2>
 
@@ -238,5 +285,26 @@ function getArtworkData() {
       });
     })
   }
+
+  //New Artwork Form
+
+  function showArtworkForm() {
+
+      const newArtForm = `
+      <form id="create-artwork-form" style="">
+      <h2>Add an Artwork</h2>
+      <label for="name">Title:</label>
+      <input id="input-name" type="text" name="title" value="" class="input-text">
+      <br><br>
+      <label for="description">Description:</label>
+      <textarea id="input-biography" name="description:" value=""></textarea>
+      <br><br>
+      <input id="create-button" type="submit" name="submit" value="Add Artwork" class="submit">
+      </form>`
+
+      document.getElementById("new-artwork-form-container").innerHTML += newForm
+    }
+
+  //Homepage
 
   getArtworkData()

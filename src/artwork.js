@@ -13,6 +13,8 @@ class Artwork {
 
   renderArtworkCard(){
     return`
+
+    
     <div class="col-md-4">
     <div class="card mb-4 shadow-sm">
         <div id= "${this.id}">
@@ -23,42 +25,28 @@ class Artwork {
             ${this.artist.name}<br>
             ${this.year}<br></p>
             <div id="Likes">Likes: ${this.likes}</div>
-          
+
+            <h2 class="mb-0">
+              <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Learn More
+              </button>
+            </h2>
+
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="card-body">
+                ${this.description}</div>
+            </div>
+
             <div class="d-flex justify-content-between align-items-center">
           </div>
         </div>
       </div>
     </div>`
-
   }
-  // <div id=artworkCard data-id=${this.id}>
-  // <img src=${this.image_url} height="400" width="auto">
-  // <h2>${this.title}</h2>
-  // <h3>${this.artist.name}</h3>
-  // <h3>${this.year}</h3>
-  //
-  // <label for="likes">Likes:</label>
-  // <div id="Likes">${this.likes}</div>
-  // <button id="like-button" data-id=${this.id}>Add Like</button>
-  // <p>${this.description}</p>
-  // <button data-id=${this.id}>Edit</button>
-  // </div>
-
-  // <div class="btn-group">
-  //   <button type="button" class="btn btn-sm btn-outline-secondary">Learn More</button>
-  // </div>
 
   static findById(id) {
     return this.all.find(artwork => artwork.id === id);
   }
-
-  static artworkTotal(){
-    return this.all.length
-  }
-
-
-
-
 }
 
 Artwork.all= []

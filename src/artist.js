@@ -9,9 +9,28 @@ class Artist {
   renderArtistCard(){
     return `
     <div data-id=${this.id}>
-    <h2>${this.name}</h2>
-    <p>${this.biography}</p>
+    <div class="accordion" id="accordion">
+      <div class="card">
+      <div class="card-header" id="headingOne">
+      <h1>${this.name}</h1>
+      <h2 class="mb-0">
+        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Biography
+        </button>
+      </h2>
+    </div>
+
+      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+        ${this.biography}
+        </div>
+      </div>
+    </div>
     </div>`
+  }
+
+  static findById(id) {
+    return this.all.find(artist => artist.id === id);
   }
 
 }
