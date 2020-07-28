@@ -93,30 +93,49 @@ function getArtists(){
       let newArtist= new Artist(artist, artist.attributes)})
 
       const artistArray= Artist.all
-      debugger
+
       artistArray.forEach(element => {
       const artistCard= `
       <div class="accordion" id="accordion">
-      
-      <div class="album py-5 bg-light" >
-        <div class="container"  >
-          <div class="card-deck">
-          <div  class="row"
-
       <div class="col-md-4">
       <div class="card mb-4 shadow-sm">
           <div id= "${element.id}">
           <h5 class="card-title">${element.name}</h5>
           <div class="card-body">
-            <p class="card-text">
-            </p>
-            <button id="add-artwork-button" class="btn btn-link" data-id=${element.id}>Add Artwork</button>
+
+            <h2 class="mb-0">
+              <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse1${element.id}" aria-expanded="true" aria-controls="collapseOne">
+                Add Artwork
+              </button>
+            </h2>
+            <div id="collapse1${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="card-body">
+                <form id="create-artwork-form" data-id= "${element.id}" style="">
+                <h2>Add an Artwork</h2>
+                <label for="name">Title:</label>
+                <input id="input-title" type="text" name="title" value="" class="input-text">
+                <br><br>
+                <label for="name">Year:</label>
+                <input id="input-year" type="text" name="year" value="" class="input-text">
+                <br><br>
+                <label for="name">Image URL:</label>
+                <input id="input-image-url" type="text" name="image_url" value="" class="input-text">
+                <br><br>
+                <label for="description">Description:</label>
+                <textarea id="input-description" name="description:" value=""></textarea>
+                <br><br>
+                <input id="create-artwork-button" type="submit" name="submit" value="Add Artwork" class="submit">
+                </form>
+                </div>
+            </div>
+
+
               <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${element.id}" aria-expanded="true" aria-controls="collapseOne">
                   Biography
                 </button>
               </h2>
-              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+              <div id="collapse${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
                   ${element.biography}</div>
               </div>
@@ -131,17 +150,43 @@ function getArtists(){
     const divElement = document.createElement('div');
     divElement.innerHTML += artistCard;
     main.appendChild(divElement)
-    divElement.addEventListener("click", function(e){
-
+    divElement.addEventListener("submit", function(e){
       const id = e.target.dataset.id;
       const artist = Artist.findById(id);
-      displayNewArtworkForm(e, artist)})
+      createArtworkFormHandler(e, artist)})
     });
   });
 }
 
-function displayNewArtworkForm(e, artist){
+function createArtworkFormHandler(e, artist){
   console.log(e, artist)
+  e.preventDefault();
+  const artistId= artist.id
+  const artworkTitle= document.querySelector("#input-title").value
+  const artworkYear= document.querySelector("#input-year").value
+  const artworkImage= document.querySelector("#input-image-url").value
+  const artworkDescription= document.querySelector("#input-description").value
+  postArtworkFetch(artistId, artworkTitle, artworkYear, artworkImage, artworkDescription)
+}
+
+function postArtworkFetch(artist_id, title, year, image_url, description){
+  const bodyData= {artist_id, title, year, image_url, description}
+  debugger
+  fetch(artworksURL, {
+     method: "POST",
+     headers: {'Content-Type': 'application/json'},
+     body: JSON.stringify(bodyData)
+   })
+   .then(response => response.json())
+   .then(artwork => {console.log(artwork);
+
+     const artworkDisplay= `
+
+      <h3>New Artwork Added!</h3>
+      `
+
+   document.querySelector('#show-created-artwork').innerHTML += artworkDisplay
+  })
 }
 
 //New Artist Form
@@ -257,12 +302,12 @@ function getArtworkData() {
                   <button id="like-button" class="btn btn-link" data-id=${element.id}>♡</button>
 
                   <h2 class="mb-0">
-                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${element.id}" aria-expanded="true" aria-controls="collapseOne">
                       Learn More
                     </button>
                   </h2>
 
-                  <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                  <div id="collapse${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
                       ${element.description}</div>
                   </div>
@@ -285,25 +330,6 @@ function getArtworkData() {
       });
     })
   }
-
-  //New Artwork Form
-
-  function showArtworkForm() {
-
-      const newArtForm = `
-      <form id="create-artwork-form" style="">
-      <h2>Add an Artwork</h2>
-      <label for="name">Title:</label>
-      <input id="input-name" type="text" name="title" value="" class="input-text">
-      <br><br>
-      <label for="description">Description:</label>
-      <textarea id="input-biography" name="description:" value=""></textarea>
-      <br><br>
-      <input id="create-button" type="submit" name="submit" value="Add Artwork" class="submit">
-      </form>`
-
-      document.getElementById("new-artwork-form-container").innerHTML += newForm
-    }
 
   //Homepage
 

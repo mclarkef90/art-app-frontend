@@ -13,8 +13,6 @@ class Artwork {
 
   renderArtworkCard(){
     return`
-
-    
     <div class="col-md-4">
     <div class="card mb-4 shadow-sm">
         <div id= "${this.id}">
@@ -27,12 +25,12 @@ class Artwork {
             <div id="Likes">Likes: ${this.likes}</div>
 
             <h2 class="mb-0">
-              <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${this.id}" aria-expanded="true" aria-controls="collapseOne">
                 Learn More
               </button>
             </h2>
 
-            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div id="collapse${this.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
               <div class="card-body">
                 ${this.description}</div>
             </div>
