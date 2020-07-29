@@ -3,85 +3,15 @@ const artistsURL= "http://localhost:3000/api/v1/artists"
 
 //Index.html Body Sections
 const landingDisplay = document.querySelector('#landing-display')
-const artworkContainer = document.querySelector('#artwork-container')
 const artistContainer = document.querySelector('#artist-container')
 const createArtistForm= document.querySelector("#new-artist-form-container")
 const showArtist= document.querySelector("#show-created-artist")
 const searchBar= document.querySelector(".search-container")
-
-//Index.html Nav Bar Links
-const home= document.querySelector("#home")
-const showArt= document.querySelector("#showArt")
-const showArtists= document.querySelector("#showArtists")
-const showForm= document.querySelector("#showForm")
-let artists= false
-let art= false
-let form= false
-let homeV= false
-let jumbotron= false
+const clearSearch= document.querySelector("#clear-button")
 
 //Event Listener Buttons
 const likeButton= document.getElementById("like-button")
-const artCard= document.querySelector(".card mb-4 shadow-sm")
-
-//Event Listeners to Change Layout of HTML Page, based on Nav Selection
-home.addEventListener('click', () => {
-  homev= !homev
-  if (homeV) {
-    artworkContainer.style.display = 'none';
-    artistContainer.style.display = 'none';
-    createArtistForm.style.display = 'none';
-    showArtist.style.display= 'none';
-    searchBar.style.display= 'none';
-    landingDisplay.style.display= 'block';
-    }
-  else {}
-  })
-
-showArt.addEventListener('click', () => {
-  art = !art
-  getArtworks()
-  if (art) {
-    artworkContainer.style.display = 'auto';
-    artistContainer.style.display = 'none';
-    createArtistForm.style.display = 'none';
-    landingDisplay.style.display= 'none';
-    showArtist.style.display= 'none';
-    searchBar.style.display= 'none';
-    }
-  else {
-    artworkContainer.style.display = 'none' }
-  })
-
-showArtists.addEventListener('click', () => {
-  artists = !artists
-  getArtists()
-  if (artists) {
-    searchBar.style.display= 'auto';
-    artistContainer.style.display = 'block';
-    showArtist.style.display= 'none';
-    artworkContainer.style.display = 'none';
-    createArtistForm.style.display = 'none';
-    landingDisplay.style.display= 'none';
-    }
-  else {
-    artistContainer.style.display = 'none'}
-  })
-
-showForm.addEventListener('click', () => {
-  form = !form
-  showArtistForm()
-  if (form) {
-    createArtistForm.style.display = 'block';
-      artworkContainer.style.display = 'none';
-      artistContainer.style.display = 'none';
-      landingDisplay.style.display= 'none';
-      showArtist.style.display= 'block';
-      searchBar.style.display= 'none';
-    }
-  else {
-    createArtistForm.style.display = 'none'}
-  })
+//const artCard= document.querySelector(".card mb-4 shadow-sm")
 
 //Fetch Calls to DB for Index
 
@@ -91,7 +21,6 @@ function getArtworks() {
   .then(artworks => {
     artworks.data.forEach(artwork => {
       let newArtwork= new Artwork(artwork, artwork.attributes)
-      document.querySelector('#artwork-container').innerHTML += newArtwork.renderArtworkCard()
     });
   })
 }
@@ -106,66 +35,6 @@ function getArtists(){
       const artistArray= Artist.all
 
       artistArray.forEach(element => {artistMenuCard(element)})
-    //   const artistCard= `
-    //   <div class="accordion" id="accordion">
-    //   <div class="col-md-4">
-    //   <div class="card mb-4 shadow-sm">
-    //       <div id= "${element.id}">
-    //       <h5 class="card-title" id="artist-name">${element.name} </h5>
-    //       <div class="card-body">
-    //
-    //         <h2 class="mb-0">
-    //           <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse1${element.id}" aria-expanded="true" aria-controls="collapseOne">
-    //             Add Artwork
-    //           </button>
-    //         </h2>
-    //         <div id="collapse1${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-    //           <div class="card-body">
-    //             <form id="create-artwork-form" class="form${element.id}" data-id="${element.id}" style="">
-    //             <h2>Add an Artwork</h2>
-    //             <label for="name">Title:</label>
-    //             <input id="input-title${element.id}" type="text" name="title" value="" class="input-text">
-    //             <br><br>
-    //             <label for="name">Year:</label>
-    //             <input id="input-year${element.id}" type="text" name="year" value="" class="input-text">
-    //             <br><br>
-    //             <label for="name">Image URL:</label>
-    //             <input id="input-image-url${element.id}" type="text" name="image_url" value="" class="input-text">
-    //             <br><br>
-    //             <label for="description">Description:</label>
-    //             <textarea id="input-description${element.id}" name="description:" value=""></textarea>
-    //             <br><br>
-    //             <input id="create-artwork-button" type="submit" name="submit" value="Add Artwork" class="submit">
-    //             </form>
-    //             </div>
-    //         </div>
-    //
-    //           <h2 class="mb-0">
-    //             <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${element.id}" aria-expanded="true" aria-controls="collapseOne">
-    //               Biography
-    //             </button>
-    //           </h2>
-    //           <div id="collapse${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-    //             <div class="card-body">
-    //               ${element.biography}</div>
-    //           </div>
-    //           <div class="d-flex justify-content-between align-items-center">
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>`
-    //
-    //
-    //
-    // const main= document.querySelector('#artist-container')
-    // const divElement = document.createElement('div');
-    // divElement.innerHTML += artistCard;
-    // main.appendChild(divElement)
-    // divElement.addEventListener("submit", function(e){
-    //   const id = e.target.dataset.id;
-    //   const artist = Artist.findById(id);
-    //   createArtworkFormHandler(e, artist)})
-    // });
   });
 }
 
@@ -264,14 +133,6 @@ function postFetch(name, biography) {
   })
 }
 
-//Like an Artwork
-
-artworkContainer.addEventListener("click", (e) =>{
-      const id = e.target.dataset.id;
-      const artwork = Artwork.findById(id);
-      likes(e, artwork)
-})
-
   function likes(e, artwork){
     e.preventDefault()
     let updateLikes = parseInt(artwork.likes + 1)
@@ -311,7 +172,6 @@ function getArtworkData() {
 
           const artCard= `
 
-
           <div class="col-md-4">
           <div class="card mb-4 shadow-sm">
           <div class="accordion" id="accordion">
@@ -343,11 +203,8 @@ function getArtworkData() {
           </div>`
 
             const main= document.querySelector('#landing-display')
-
             main.innerHTML += artCard;
-
             main.addEventListener("click", function(e){
-
               const id = e.target.dataset.id;
               const artwork = Artwork.findById(id);
               likes(e, artwork)});
@@ -355,7 +212,7 @@ function getArtworkData() {
     })
   }
 
-  //Search Artists Search Bar
+//Search Artists Search Bar
   const filterItems = (arr, query) => {
     return arr.filter(el => el.toLowerCase().indexOf(query.toLowerCase()) !== -1)
   }
@@ -367,85 +224,30 @@ searchBar.addEventListener("submit", function(e) {
   filterForResults(searchEntry)
 })
 
+clearSearch.addEventListener("click", function(e) {
+  e.preventDefault();
+  const searchEntry= ""
+  console.log(searchEntry)
+  filterForResults(searchEntry)
+})
+
 function filterForResults(searchEntry){
 
   const array= Artist.all
-
   let results = []
   results= array.filter(el => el.name.toLowerCase().indexOf(searchEntry.toLowerCase()) !== -1)
-
   console.log(results)
-
   artistContainer.innerHTML = "";
-
   results.forEach(element => {artistMenuCard(element)})
-  // const artistCard= `
-  // <div class="accordion" id="accordion">
-  // <div class="col-md-4">
-  // <div class="card mb-4 shadow-sm">
-  //     <div id= "${element.id}">
-  //     <h5 class="card-title" id="artist-name">${element.name} </h5>
-  //     <div class="card-body">
-  //
-  //       <h2 class="mb-0">
-  //         <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse1${element.id}" aria-expanded="true" aria-controls="collapseOne">
-  //           Add Artwork
-  //         </button>
-  //       </h2>
-  //       <div id="collapse1${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-  //         <div class="card-body">
-  //           <form id="create-artwork-form" class="form${element.id}" data-id="${element.id}" style="">
-  //           <h2>Add an Artwork</h2>
-  //           <label for="name">Title:</label>
-  //           <input id="input-title${element.id}" type="text" name="title" value="" class="input-text">
-  //           <br><br>
-  //           <label for="name">Year:</label>
-  //           <input id="input-year${element.id}" type="text" name="year" value="" class="input-text">
-  //           <br><br>
-  //           <label for="name">Image URL:</label>
-  //           <input id="input-image-url${element.id}" type="text" name="image_url" value="" class="input-text">
-  //           <br><br>
-  //           <label for="description">Description:</label>
-  //           <textarea id="input-description${element.id}" name="description:" value=""></textarea>
-  //           <br><br>
-  //           <input id="create-artwork-button" type="submit" name="submit" value="Add Artwork" class="submit">
-  //           </form>
-  //           </div>
-  //       </div>
-  //
-  //         <h2 class="mb-0">
-  //           <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${element.id}" aria-expanded="true" aria-controls="collapseOne">
-  //             Biography
-  //           </button>
-  //         </h2>
-  //         <div id="collapse${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-  //           <div class="card-body">
-  //             ${element.biography}</div>
-  //         </div>
-  //         <div class="d-flex justify-content-between align-items-center">
-  //       </div>
-  //     </div>
-  //   </div>
-  // </div>`
-  //
-  //     const main= document.querySelector('#artist-container')
-  //     const divElement = document.createElement('div');
-  //     divElement.innerHTML += artistCard;
-  //     main.appendChild(divElement)
-  //     divElement.addEventListener("submit", function(e){
-  //       const id = e.target.dataset.id;
-  //       const artist = Artist.findById(id);
-  //       createArtworkFormHandler(e, artist)})
-
 }
 
 function artistMenuCard(element){
   let elementId= element.id
 
   const artistCard= `
+  <div class= "col-md-12">
+  <div class="card mb-1 shadow-sm" style="w-100 p-3">
   <div class="accordion" id="accordion">
-  <div class="col-md-6">
-  <div class="card mb-6 shadow-sm">
       <div id= "${element.id}">
       <h5 class="card-title" id="artist-name">${element.name} </h5>
       <div class="card-body">
@@ -493,12 +295,8 @@ function artistMenuCard(element){
           </h2>
           <div id="collapse3${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body">
-
-
-
-              </div>
+            </div>
           </div>
-
           <div class="d-flex justify-content-between align-items-center">
         </div>
       </div>
@@ -534,7 +332,7 @@ function artistShow(elementId){
 
     const showCard= `
 
-    <img src="${artwork.image_url}"
+    <img src="${artwork.image_url}"<br>
     <h5 class="card-title">${artwork.title}</h5>
     <div class="card-body">
       <p class="card-text">
@@ -546,17 +344,18 @@ function artistShow(elementId){
 
         document.querySelector("#collapse3"+elementId).innerHTML += showCard
 
-
-
-
   })
 }
 
-//Edit Artist
-//Delete Artist
-//Edit Artwork
-//Delete Artwork
+
+
+//Edit Artist - add link to card, collapse edit form, event listener for put
+//Delete Artist - add link, no collapse just event listener for delete
+//Edit Artwork - first find a way to may show for artworks, cards, then add link and collapse, event listener for put
+//Delete Artwork - add link, event listener for delete
 
   //Homepage
 
   getArtworkData()
+  getArtists()
+  showArtistForm()
