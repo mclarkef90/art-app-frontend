@@ -105,67 +105,67 @@ function getArtists(){
 
       const artistArray= Artist.all
 
-      artistArray.forEach(element => {
-      const artistCard= `
-      <div class="accordion" id="accordion">
-      <div class="col-md-4">
-      <div class="card mb-4 shadow-sm">
-          <div id= "${element.id}">
-          <h5 class="card-title" id="artist-name">${element.name} </h5>
-          <div class="card-body">
-
-            <h2 class="mb-0">
-              <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse1${element.id}" aria-expanded="true" aria-controls="collapseOne">
-                Add Artwork
-              </button>
-            </h2>
-            <div id="collapse1${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-              <div class="card-body">
-                <form id="create-artwork-form" class="form${element.id}" data-id="${element.id}" style="">
-                <h2>Add an Artwork</h2>
-                <label for="name">Title:</label>
-                <input id="input-title${element.id}" type="text" name="title" value="" class="input-text">
-                <br><br>
-                <label for="name">Year:</label>
-                <input id="input-year${element.id}" type="text" name="year" value="" class="input-text">
-                <br><br>
-                <label for="name">Image URL:</label>
-                <input id="input-image-url${element.id}" type="text" name="image_url" value="" class="input-text">
-                <br><br>
-                <label for="description">Description:</label>
-                <textarea id="input-description${element.id}" name="description:" value=""></textarea>
-                <br><br>
-                <input id="create-artwork-button" type="submit" name="submit" value="Add Artwork" class="submit">
-                </form>
-                </div>
-            </div>
-
-              <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${element.id}" aria-expanded="true" aria-controls="collapseOne">
-                  Biography
-                </button>
-              </h2>
-              <div id="collapse${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                <div class="card-body">
-                  ${element.biography}</div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center">
-            </div>
-          </div>
-        </div>
-      </div>`
-
-
-
-    const main= document.querySelector('#artist-container')
-    const divElement = document.createElement('div');
-    divElement.innerHTML += artistCard;
-    main.appendChild(divElement)
-    divElement.addEventListener("submit", function(e){
-      const id = e.target.dataset.id;
-      const artist = Artist.findById(id);
-      createArtworkFormHandler(e, artist)})
-    });
+      artistArray.forEach(element => {artistMenuCard(element)})
+    //   const artistCard= `
+    //   <div class="accordion" id="accordion">
+    //   <div class="col-md-4">
+    //   <div class="card mb-4 shadow-sm">
+    //       <div id= "${element.id}">
+    //       <h5 class="card-title" id="artist-name">${element.name} </h5>
+    //       <div class="card-body">
+    //
+    //         <h2 class="mb-0">
+    //           <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse1${element.id}" aria-expanded="true" aria-controls="collapseOne">
+    //             Add Artwork
+    //           </button>
+    //         </h2>
+    //         <div id="collapse1${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+    //           <div class="card-body">
+    //             <form id="create-artwork-form" class="form${element.id}" data-id="${element.id}" style="">
+    //             <h2>Add an Artwork</h2>
+    //             <label for="name">Title:</label>
+    //             <input id="input-title${element.id}" type="text" name="title" value="" class="input-text">
+    //             <br><br>
+    //             <label for="name">Year:</label>
+    //             <input id="input-year${element.id}" type="text" name="year" value="" class="input-text">
+    //             <br><br>
+    //             <label for="name">Image URL:</label>
+    //             <input id="input-image-url${element.id}" type="text" name="image_url" value="" class="input-text">
+    //             <br><br>
+    //             <label for="description">Description:</label>
+    //             <textarea id="input-description${element.id}" name="description:" value=""></textarea>
+    //             <br><br>
+    //             <input id="create-artwork-button" type="submit" name="submit" value="Add Artwork" class="submit">
+    //             </form>
+    //             </div>
+    //         </div>
+    //
+    //           <h2 class="mb-0">
+    //             <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${element.id}" aria-expanded="true" aria-controls="collapseOne">
+    //               Biography
+    //             </button>
+    //           </h2>
+    //           <div id="collapse${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+    //             <div class="card-body">
+    //               ${element.biography}</div>
+    //           </div>
+    //           <div class="d-flex justify-content-between align-items-center">
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>`
+    //
+    //
+    //
+    // const main= document.querySelector('#artist-container')
+    // const divElement = document.createElement('div');
+    // divElement.innerHTML += artistCard;
+    // main.appendChild(divElement)
+    // divElement.addEventListener("submit", function(e){
+    //   const id = e.target.dataset.id;
+    //   const artist = Artist.findById(id);
+    //   createArtworkFormHandler(e, artist)})
+    // });
   });
 }
 
@@ -442,8 +442,6 @@ function filterForResults(searchEntry){
 function artistMenuCard(element){
   let elementId= element.id
 
-debugger
-
   const artistCard= `
   <div class="accordion" id="accordion">
   <div class="col-md-6">
@@ -522,7 +520,7 @@ debugger
 }
 
 
-
+//Show all artworks by Artist
 function artistShow(elementId){
   let artistArtworks= []
   let allArtworks= Artwork.all
@@ -555,7 +553,6 @@ function artistShow(elementId){
 }
 
 //Edit Artist
-//Show All Artworks by Artist
 //Delete Artist
 //Edit Artwork
 //Delete Artwork
