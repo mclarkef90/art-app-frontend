@@ -9,6 +9,9 @@ const showArtist= document.querySelector("#show-created-artist")
 const searchBar= document.querySelector(".search-container")
 const clearSearch= document.querySelector("#clear-button")
 
+
+
+
 //Event Listener Buttons
 const likeButton= document.getElementById("like-button")
 //const artCard= document.querySelector(".card mb-4 shadow-sm")
@@ -125,8 +128,8 @@ function postFetch(name, biography) {
      <br>
       <h3>New Artist Added!</h3>
       <div data-id=${artist.Id}>
-      <p>${artist.name}</p>
-      <p>${artist.biography}</p>
+      <p>Name: ${artist.name}</p>
+      <p>Biography: <br>${artist.biography}</p>
       </div>`
 
    document.querySelector('#show-created-artist').innerHTML += artistDisplay
@@ -257,6 +260,7 @@ function artistMenuCard(element){
             Add Artwork
           </button>
         </h2>
+
         <div id="collapse1${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
           <div class="card-body">
             <form id="create-artwork-form" class="form${element.id}" data-id="${element.id}" style="">
