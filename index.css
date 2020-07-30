@@ -37,5 +37,22 @@ img {
     height: 200px;
     object-fit: cover;
     object-position: top;
+}
 
+.search-container{
+  padding-right: 3rem;
+  padding-left: 3rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+
+  background-color: #fff
+}
+
+.new-artist-form-container{
+  padding-right: 3rem;
+  padding-left: 3rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+
+  background-color: #fff
 }
