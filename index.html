@@ -47,16 +47,19 @@
               <h4 class="text-white">Art App</h4>
               <p class="text-muted">Make sure you see art everyday. Visit Art App to see a random selection of works, search artists, or add your own work.</p>
             </div>
-            <div class="col-sm-4 offset-md-1 py-4">>
+
+            <div class="col-sm-4 offset-md-1 py-4">
               <h4 class="text-white">Menu</h4>
               <ul class="list-unstyled">
-
+                <div class="accordion" id="accordionNav" data-children=".itemAccordion">
+                   <div class="itemAccordion">
 
                 <li><a class="nav-link" id="home-nav-link" data-toggle="collapse" href="#landing-display-container" role="button" aria-expanded="false" aria-controls="landing-display-container">Home</a></li>
 
                 <li><a class="nav-link" id="artists-nav-link" data-toggle="collapse" href="#artist-area" role="button" aria-expanded="false" aria-controls="artist-area">See All Artists</a></li>
 
               </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -76,11 +79,12 @@
           </button>
         </div>
       </div>
+    </div>
     </header>
 
 <main role="main" id= "main">
 
-  <div class="collapse show" id="landing-display-container">
+  <div class="collapse show" id="landing-display-container" data-parent="#accordionNav">
     <div class="album py-5 bg-light" >
       <div class="container"  >
         <div class="card-deck">
@@ -89,9 +93,11 @@
         </div>
       </div>
     </div>
-  </div>
+   </div>
+   </div>
 
-  <div class="collapse" id="artist-area">
+  
+  <div class="collapse" id="artist-area" data-parent="#accordionNav">
       <div class="search-container">
         <form action="/action_page.php">
           <input type="text" placeholder="Search Artists" name="search" id="search-entry">
@@ -112,6 +118,7 @@
       <div id="show-created-artist"></div><br>
       <div id="show-created-artwork"></div><br>
     </div>
+  </div>
   </div>
 
 <!--
@@ -146,6 +153,7 @@
       </div>
     </div>
   </div> -->
+  </div>
 </main>
 
 <footer class="text-muted">
