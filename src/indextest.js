@@ -8,6 +8,7 @@ const createArtistForm= document.querySelector("#new-artist-form-container")
 const showArtist= document.querySelector("#show-created-artist")
 const searchBar= document.querySelector(".search-container")
 const clearSearch= document.querySelector("#clear-button")
+const updateArtist= document.querySelector("#update-artist")
 
 
 //Event Listener Buttons
@@ -124,7 +125,7 @@ function postFetch(name, biography) {
 
      const artistDisplay= `
      <br>
-      <h3>New Artist Added!</h3>
+      <h3>Entry Saved!</h3>
       <div data-id=${artist.Id}>
       <p>Name: ${artist.name}</p>
       <p>Biography: <br>${artist.biography}</p>
@@ -330,11 +331,26 @@ function artistMenuCard(element){
 }
 
 //Edit Artist
+
+updateArtist.addEventListener("submit", function(e){
+  const id = e.target.dataset.id;
+  const artist = Artist.findById(id);
+  debugger
+  artistEditFormHandler(e, artist)
+})
+
 function artistEdit(elementId){
   let artist= Artist.findById(elementId);
   document.querySelector("#update-artist").innerHTML = artist.renderUpdateForm()
-
 }
+
+function artistEditFormHandler(e, artist){
+  console.log(e, artist)
+  e.preventDefault()
+  const artistName= document.querySelector("#update-name").value
+  const artistBio= document.querySelector("#update-bio").value
+  debugger
+  postFetch(artistName, artistBio)}
 
 
 
