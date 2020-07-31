@@ -425,19 +425,25 @@ function artistShow(elementId){
         <button class="btn btn-link btn-block text-left" type="button" id="deleteArtwork${artwork.id}">Delete</button>
         `
 
-        document.querySelector("#collapse3"+elementId).innerHTML += showCard
+        const showAll= document.querySelector("#collapse3"+elementId)
+        const divElement = document.createElement('div');
+        divElement.innerHTML += showCard;
+        showAll.appendChild(divElement)
 
+
+        //document.querySelector("#collapse3"+elementId).innerHTML += showCard
         const editArtworkLink= document.querySelector("#editArtwork"+artworkId)
 
         editArtworkLink.addEventListener("click", function(e){
           console.log(e);
           artworkEdit(e, artworkId)
         })
-
-  })
+        })
 }
 
 //Edit Artwork
+
+
 
 function artworkEdit(e, artworkId){
   let artwork= Artwork.findById(artworkId);
