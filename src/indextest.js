@@ -438,12 +438,15 @@ function artistShow(elementId){
           console.log(e);
           artworkEdit(e, artworkId)
         })
+
+        const deleteArtworkLink= document.querySelector("#deleteArtwork"+artworkId)
+        deleteArtworkLink.addEventListener("click", function(e){
+          artworkDelete(e, artworkId)
         })
+      })
 }
 
 //Edit Artwork
-
-
 
 function artworkEdit(e, artworkId){
   let artwork= Artwork.findById(artworkId);
@@ -459,7 +462,6 @@ updateArtwork.addEventListener("submit", function(e){
 function artworkEditFormHandler(e, artwork){
   console.log(e, artwork)
   e.preventDefault();
-  debugger
   const artworkId= artwork.id
   const artworkTitle= document.querySelector("#update-title").value
   const artworkYear= document.querySelector("#update-year").value
@@ -497,10 +499,15 @@ function patchArtwork(artworkId, title, year, image_url, description){
  })
 };
 
-//Edit Artist - add link to card, collapse edit form, event listener for put
-//Delete Artist - add link, no collapse just event listener for delete
-//Edit Artwork - first find a way to may show for artworks, cards, then add link and collapse, event listener for put
 //Delete Artwork - add link, event listener for delete
+
+function artworkDelete(e, artworkId){
+    console.log(e, artworkId)
+    fetch(artworksURL + '/' + artworkId, {method: 'DELETE'})
+
+    const message= `<h3>Artwork Deleted!</h3>`
+    document.querySelector('#show-created-artwork').innerHTML += message
+}
 
   //Homepage
 
