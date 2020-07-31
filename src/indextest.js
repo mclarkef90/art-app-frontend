@@ -9,6 +9,7 @@ const showArtist= document.querySelector("#show-created-artist")
 const searchBar= document.querySelector(".search-container")
 const clearSearch= document.querySelector("#clear-button")
 const updateArtist= document.querySelector("#update-artist")
+const updateArtwork= document.querySelector("#update-artwork")
 
 
 //Event Listener Buttons
@@ -125,7 +126,7 @@ function postFetch(name, biography) {
 
      const artistDisplay= `
      <br>
-      <h3>Entry Saved!</h3>
+      <h3>Artist Saved!</h3>
       <div data-id=${artist.Id}>
       <p>Name: ${artist.name}</p>
       <p>Biography: <br>${artist.biography}</p>
@@ -293,7 +294,10 @@ function artistMenuCard(element){
           <div id="collapse2${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body">
               ${element.biography}
+
               <button class="btn btn-link btn-block text-left" type="button" id="editArtist${element.id}">Edit</button>
+
+              <button class="btn btn-link btn-block text-left" type="button" id="deleteArtist${element.id}">Delete</button>
               </div>
           </div>
 
@@ -328,6 +332,11 @@ function artistMenuCard(element){
       editArtistLink.addEventListener("click", function(e){
         artistEdit(elementId)
       })
+      const deleteArtistLink= document.querySelector("#deleteArtist"+elementId)
+      deleteArtistLink.addEventListener("click", function(e){
+        artistDelete(e, elementId)
+      })
+
 }
 
 //Edit Artist
@@ -335,7 +344,6 @@ function artistMenuCard(element){
 updateArtist.addEventListener("submit", function(e){
   const id = e.target.dataset.id;
   const artist = Artist.findById(id);
-  debugger
   artistEditFormHandler(e, artist)
 })
 
@@ -347,10 +355,44 @@ function artistEdit(elementId){
 function artistEditFormHandler(e, artist){
   console.log(e, artist)
   e.preventDefault()
+  const artistId= artist.id
   const artistName= document.querySelector("#update-name").value
   const artistBio= document.querySelector("#update-bio").value
-  debugger
-  postFetch(artistName, artistBio)}
+  updateFetch(artistName, artistBio, artistId)}
+
+function updateFetch(name, biography, artistId) {
+    const bodyData= {name, biography}
+
+    fetch(`http://localhost:3000/api/v1/artists/${artistId}`, {
+       method: "PUT",
+       headers: {'Content-Type': 'application/json'},
+       body: JSON.stringify(bodyData)
+     })
+     .then(response => response.json())
+     .then(artist => {console.log(artist);
+
+       const artistDisplay= `
+       <br>
+        <h3>Edits Saved!</h3>
+        <div data-id=${artist.Id}>
+        <p>Name: ${artist.name}</p>
+        <p>Biography: <br>${artist.biography}</p>
+        </div>`
+
+     document.querySelector('#show-created-artist').innerHTML += artistDisplay
+    })
+  }
+
+
+//Delete Artist
+
+function artistDelete(e, elementId){
+  console.log(e, elementId)
+  fetch(artistsURL + '/' + elementId, {method: 'DELETE'})
+
+  const message= `<h3>Artist Deleted!</h3>`
+  document.querySelector('#show-created-artist').innerHTML += message
+}
 
 
 
@@ -365,7 +407,7 @@ function artistShow(elementId){
   })
 
   artistArtworks.forEach(artwork=> {
-
+    let artworkId= artwork.id
     const showCard= `
 
     <img src="${artwork.image_url}"<br>
@@ -376,13 +418,78 @@ function artistShow(elementId){
         Likes: ${artwork.likes}<br>
         ${artwork.year}<br>
         ${artwork.description}</p>
-        </div>`
+        </div>
+
+        <button class="btn btn-link btn-block text-left" type="button" id="editArtwork${artwork.id}">Edit</button>
+
+        <button class="btn btn-link btn-block text-left" type="button" id="deleteArtwork${artwork.id}">Delete</button>
+        `
 
         document.querySelector("#collapse3"+elementId).innerHTML += showCard
+
+        const editArtworkLink= document.querySelector("#editArtwork"+artworkId)
+
+        editArtworkLink.addEventListener("click", function(e){
+          console.log(e);
+          artworkEdit(e, artworkId)
+        })
 
   })
 }
 
+//Edit Artwork
+
+function artworkEdit(e, artworkId){
+  let artwork= Artwork.findById(artworkId);
+  document.querySelector("#update-artwork").innerHTML = artwork.renderUpdateForm()
+}
+
+updateArtwork.addEventListener("submit", function(e){
+  const id = e.target.dataset.id;
+  const artwork = Artwork.findById(id);
+  artworkEditFormHandler(e, artwork)
+})
+
+function artworkEditFormHandler(e, artwork){
+  console.log(e, artwork)
+  e.preventDefault();
+  debugger
+  const artworkId= artwork.id
+  const artworkTitle= document.querySelector("#update-title").value
+  const artworkYear= document.querySelector("#update-year").value
+  const artworkImage= document.querySelector("#update-image").value
+  const artworkDescription= document.querySelector("#update-description").value
+
+  patchArtwork(artworkId, artworkTitle, artworkYear, artworkImage, artworkDescription)
+}
+
+function patchArtwork(artworkId, title, year, image_url, description){
+  const bodyData= {title, year, image_url, description}
+  fetch(`http://localhost:3000/api/v1/artworks/${artworkId}`, {
+    method: "PATCH",
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(bodyData)
+  })
+  .then(response => response.json())
+  .then(artwork => {
+    console.log(artwork);
+
+    const artist= Artist.findById(`${artwork.artist_id}`);
+    const artistName= artist.name;
+
+    const artworkDisplay= `
+    <div data-id=${artwork.id}>
+    <h3>Entry Saved!</h3>
+    <img src="${artwork.image_url}" alt="...">
+    <p>Title: ${artwork.title}</p>
+    <p>Year: ${artwork.year}</p>
+    <p>Artist: ${artistName} </p>
+    <p>Likes: ${artwork.likes}</p>
+    <p>Description: ${artwork.description}</p>`
+
+  document.querySelector('#show-created-artist').innerHTML += artworkDisplay
+ })
+};
 
 //Edit Artist - add link to card, collapse edit form, event listener for put
 //Delete Artist - add link, no collapse just event listener for delete
