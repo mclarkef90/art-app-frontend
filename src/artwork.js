@@ -42,6 +42,30 @@ class Artwork {
     </div>`
   }
 
+  renderUpdateForm() {
+      return `
+      <form data-id=${this.id}>
+        <label>Title</label>
+        <p>
+          <input type="text" id= "update-title" value="${this.title}" />
+        </p>
+        <label>Year</label>
+        <p>
+          <input type="text" id= "update-year" value="${this.year}" />
+        </p>
+        <label>Image URL</label>
+        <p>
+          <input type="text" id= "update-image" value="${this.image_url}" />
+        </p>
+        <label>Description</label>
+        <p>
+          <textarea id="update-description">${this.description}</textarea>
+        </p>
+        <button type='submit'>Save Changes</button>
+      </form>
+    `;
+    }
+
   static findById(id) {
     return this.all.find(artwork => artwork.id === id);
   }
