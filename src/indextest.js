@@ -10,14 +10,10 @@ const searchBar= document.querySelector(".search-container")
 const clearSearch= document.querySelector("#clear-button")
 
 
-
-
 //Event Listener Buttons
 const likeButton= document.getElementById("like-button")
-//const artCard= document.querySelector(".card mb-4 shadow-sm")
 
 //Fetch Calls to DB for Index
-
 function getArtworks() {
   fetch(artworksURL)
   .then(response => response.json())
@@ -40,6 +36,8 @@ function getArtists(){
       artistArray.forEach(element => {artistMenuCard(element)})
   });
 }
+
+//New Artwork Create
 
 function createArtworkFormHandler(e, artist){
 
@@ -136,6 +134,8 @@ function postFetch(name, biography) {
   })
 }
 
+//Like an Artwork, Patch to DB to Update Likes
+
   function likes(e, artwork){
     e.preventDefault()
     let updateLikes = parseInt(artwork.likes + 1)
@@ -215,7 +215,7 @@ function getArtworkData() {
     })
   }
 
-//Search Artists Search Bar
+//Artists Search Bar
   const filterItems = (arr, query) => {
     return arr.filter(el => el.toLowerCase().indexOf(query.toLowerCase()) !== -1)
   }
@@ -243,6 +243,8 @@ function filterForResults(searchEntry){
   artistContainer.innerHTML = "";
   results.forEach(element => {artistMenuCard(element)})
 }
+
+//Artist Card
 
 function artistMenuCard(element){
   let elementId= element.id
@@ -289,7 +291,9 @@ function artistMenuCard(element){
           </h2>
           <div id="collapse2${element.id}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
             <div class="card-body">
-              ${element.biography}</div>
+              ${element.biography}
+              <button class="btn btn-link btn-block text-left" type="button" id="editArtist${element.id}">Edit</button>
+              </div>
           </div>
 
           <h2 class="mb-0">
@@ -319,7 +323,19 @@ function artistMenuCard(element){
       showLink.addEventListener("click", function(e){
         artistShow(elementId)
       })
+      const editArtistLink= document.querySelector("#editArtist"+elementId)
+      editArtistLink.addEventListener("click", function(e){
+        artistEdit(elementId)
+      })
 }
+
+//Edit Artist
+function artistEdit(elementId){
+  let artist= Artist.findById(elementId);
+  document.querySelector("#update-artist").innerHTML = artist.renderUpdateForm()
+
+}
+
 
 
 //Show all artworks by Artist
@@ -350,7 +366,6 @@ function artistShow(elementId){
 
   })
 }
-
 
 
 //Edit Artist - add link to card, collapse edit form, event listener for put

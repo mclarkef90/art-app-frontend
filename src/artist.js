@@ -29,6 +29,22 @@ class Artist {
     </div>`
   }
 
+renderUpdateForm() {
+    return `
+    <form data-id=${this.id}>
+      <label>Name</label>
+      <p>
+        <input type="text" value="${this.name}" />
+      </p>
+      <label>Biography</label>
+      <p>
+        <textarea>${this.biography}</textarea>
+      </p>
+      <button type='submit'>Save Changes</button>
+    </form>
+  `;
+  }
+
   static findById(id) {
     return this.all.find(artist => artist.id === id);
   }
