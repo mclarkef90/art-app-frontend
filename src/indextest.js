@@ -218,9 +218,6 @@ function getArtworkData() {
   }
 
 //Artists Search Bar
-  const filterItems = (arr, query) => {
-    return arr.filter(el => el.toLowerCase().indexOf(query.toLowerCase()) !== -1)
-  }
 
 searchBar.addEventListener("submit", function(e) {
   e.preventDefault();
@@ -393,8 +390,6 @@ function artistDelete(e, elementId){
   const message= `<h3>Artist Deleted!</h3>`
   document.querySelector('#show-created-artist').innerHTML += message
 }
-
-
 
 //Show all artworks by Artist
 function artistShow(elementId){
